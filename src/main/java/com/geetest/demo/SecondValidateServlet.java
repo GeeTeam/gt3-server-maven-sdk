@@ -17,12 +17,12 @@ import com.geetest.sdk.GeetestLibResult;
 public class SecondValidateServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request,
-        HttpServletResponse response) throws ServletException, IOException {
+                          HttpServletResponse response) throws ServletException, IOException {
         GeetestLib gtLib = new GeetestLib(GeetestConfig.geetestId,
-            GeetestConfig.geetestKey);
+                GeetestConfig.geetestKey);
 
         String challenge = request
-            .getParameter(GeetestConfig.GEETEST_CHALLENGE);
+                .getParameter(GeetestConfig.GEETEST_CHALLENGE);
         String validate = request.getParameter(GeetestConfig.GEETEST_VALIDATE);
         String seccode = request.getParameter(GeetestConfig.GEETEST_SECCODE);
 
@@ -31,35 +31,38 @@ public class SecondValidateServlet extends HttpServlet {
         int gt_server_status_code = 0;
         String userId = "";
         try {
-            // 从session中获取一次验证状态码和userId
+            //从session中获取一次验证状态码和userId
             gt_server_status_code = (Integer) request.getSession()
-                .getAttribute(GeetestConfig.GEETEST_SERVER_STATUS_SESSION_KEY);
+                    .getAttribute(GeetestConfig.GEETEST_SERVER_STATUS_SESSION_KEY);
             userId = (String) request.getSession().getAttribute("userId");
         } catch (Exception e) {
             gtLib.gtlog(
-                "SecondValidateServlet.doPost()：二次验证validate：session取key发生异常，"
-                    + e.toString());
+                    "SecondValidateServlet.doPost()：二次验证validate：session取key发生异常，"
+                            + e.toString());
             out.println("{\"status\":\"fail\"}");
             return;
         }
 
+        String digestmod = "md5"; //必传参数，此版本sdk可支持md5、sha256、hmac-sha256，md5之外的算法需特殊配置的账号，联系极验客服
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("digestmod", digestmod);
         //自定义参数,可选择添加
-        HashMap<String, String> param = new HashMap<String, String>();
-        param.put("user_id", userId); //网站用户id
-        param.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
-        param.put("ip_address", "127.0.0.1"); //传输用户请求验证时所携带的IP
+        paramMap.put("user_id", userId); //网站用户id
+        paramMap.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+        paramMap.put("ip_address", "127.0.0.1"); //传输用户请求验证时所携带的IP
 
         GeetestLibResult result = null;
         // gt_server_status_code 为1代表一次验证register正常，走正常二次验证模式；为0代表一次验证异常，走failback模式
         if (gt_server_status_code == 1) {
             //gt-server正常，向极验服务器发起二次验证
-            result = gtLib.successValidate(challenge, validate, seccode, param);
+            result = gtLib.successValidate(challenge, validate, seccode,
+                    paramMap, digestmod);
         } else {
             // gt-server非正常情况，进行failback模式本地验证
             result = gtLib.failValidate(challenge, validate, seccode);
         }
 
-        // // 注意，不要更改返回的结构和值类型
+        // 注意，不要更改返回的结构和值类型
         out.println(result.getData());
     }
 }
