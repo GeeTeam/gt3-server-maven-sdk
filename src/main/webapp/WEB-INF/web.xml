@@ -3,7 +3,7 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app id="WebApp_ID">
-    <display-name>gt3-maven-sdk</display-name>
+    <display-name>gt3-server-maven-sdk</display-name>
 
     <servlet>
         <servlet-name>FirstRegisterServlet</servlet-name>
@@ -18,14 +18,14 @@
 
     <servlet-mapping>
         <servlet-name>FirstRegisterServlet</servlet-name>
-        <url-pattern>/gt/register</url-pattern>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SecondValidateServlet</servlet-name>
-        <url-pattern>/gt/validate</url-pattern>
+        <url-pattern>/validate</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 </web-app>
