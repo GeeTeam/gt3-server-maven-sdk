@@ -1,23 +1,16 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>gt-node-sdk-demo</title>
+    <title>geetest sdk demo</title>
     <style>
         body {
             margin: 50px 0;
             text-align: center;
             font-family: "PingFangSC-Regular", "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;
         }
+
         .inp {
             border: 1px solid #cccccc;
             border-radius: 2px;
@@ -26,6 +19,7 @@
             height: 40px;
             font-size: 18px;
         }
+
         .btn {
             border: 1px solid #cccccc;
             border-radius: 2px;
@@ -36,29 +30,36 @@
             cursor: pointer;
             background: white linear-gradient(180deg, #ffffff 0%, #f3f3f3 100%);
         }
+
         .btn:hover {
             background: white linear-gradient(0deg, #ffffff 0%, #f3f3f3 100%)
         }
-        #captcha1 {
+
+        #captcha {
             width: 300px;
             display: inline-block;
         }
+
         .show {
             display: block;
         }
+
         .hide {
             display: none;
         }
-        #notice1 {
+
+        #notice {
             color: red;
         }
+
         label {
             vertical-align: top;
             display: inline-block;
             width: 80px;
             text-align: right;
         }
-        #wait1 {
+
+        #wait {
             text-align: left;
             color: #666;
             margin: 0;
@@ -66,56 +67,56 @@
     </style>
 </head>
 <body>
-<h1>极验验证SDK Demo</h1>
-<form action="gt/validate" method="post">
+<h1>极验验证SDK DEMO</h1>
+<form action="validate" method="post">
     <br>
     <div>
-        <label for="username1">用户名：</label>
-        <input class="inp" id="username1" type="text" value="极验验证">
+        <label for="username">用户名：</label>
+        <input class="inp" id="username" type="text" value="极验验证">
     </div>
     <br>
     <div>
-        <label for="password1">密码：</label>
-        <input class="inp" id="password1" type="password" value="123456">
+        <label for="password">密码：</label>
+        <input class="inp" id="password" type="password" value="123456">
     </div>
     <br>
     <div>
         <label>完成验证：</label>
-        <div id="captcha1">
-            <p id="wait1" class="show">正在加载验证码......</p>
+        <div id="captcha">
+            <p id="wait" class="show">正在加载验证码......</p>
         </div>
     </div>
     <br>
-    <p id="notice1" class="hide">请先完成验证</p>
-    <input class="btn" id="submit1" type="submit" value="提交">
+    <p id="notice" class="hide">请先完成验证</p>
+    <input class="btn" id="submit" type="submit" value="提交">
 </form>
 
 <!-- 注意，验证码本身是不需要 jquery 库，此处使用 jquery 仅为了在 demo 使用，减少代码量 -->
 <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
 
-<!-- 引入 gt.js，既可以使用其中提供的 initGeetest 初始化函数 -->
-<script src="gt.js"></script>
+<!-- 引入 极验官方gt.js，使用其中提供的 initGeetest 初始化函数 -->
+<script src="https://static.geetest.com/static/tools/gt.js"></script>
 
 <script>
-    var handler1 = function (captchaObj) {
-        $("#submit1").click(function (e) {
+    var handler = function (captchaObj) {
+        $("#submit").click(function (e) {
             var result = captchaObj.getValidate();
             if (!result) {
-                $("#notice1").show();
+                $("#notice").show();
                 setTimeout(function () {
-                    $("#notice1").hide();
+                    $("#notice").hide();
                 }, 2000);
                 e.preventDefault();
             }
         });
         // 将验证码加到id为captcha的元素里，同时会有三个input的值用于表单提交
-        captchaObj.appendTo("#captcha1");
+        captchaObj.appendTo("#captcha");
         captchaObj.onReady(function () {
-            $("#wait1").hide();
+            $("#wait").hide();
         });
     };
     $.ajax({
-        url: "gt/register?t=" + (new Date()).getTime(), // 加随机数防止缓存
+        url: "register?t=" + (new Date()).getTime(), // 加随机数防止缓存
         type: "get",
         dataType: "json",
         success: function (data) {
@@ -129,7 +130,7 @@
                 offline: !data.success, // 表示用户后台检测极验服务器是否宕机，一般不需要关注
                 product: "float", // 产品形式，包括：float，popup
                 width: "100%"
-            }, handler1);
+            }, handler);
         }
     });
 </script>
