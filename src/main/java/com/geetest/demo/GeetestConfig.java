@@ -8,8 +8,8 @@ public class GeetestConfig {
     /**
      * 填入自己在极验官网申请的账号id和key
      */
-    public static final String GEETEST_ID = "48a6ebac4ebc6642d68c217fca33eb4d";
+    public static final String GEETEST_ID = "c9c4facd1a6feeb80802222cbb74ca8e";
 
-    public static final String GEETEST_KEY = "4f1c085290bec5afdc54df73535fc361";
+    public static final String GEETEST_KEY = "e4e298788aa8c768397639deb9b249a9";
 
 }
