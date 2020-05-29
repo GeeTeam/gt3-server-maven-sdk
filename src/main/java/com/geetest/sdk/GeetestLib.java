@@ -95,7 +95,7 @@ public class GeetestLib {
     /**
      * 一次验证
      */
-    public GeetestLibResult register(Map<String, String> paramMap, String digestmod) {
+    public GeetestLibResult register(String digestmod, Map<String, String> paramMap) {
         this.gtlog(String.format("register(): 开始一次验证, digestmod=%s.", digestmod));
         String origin_challenge = requestRegister(paramMap);
         buildRegisterResult(origin_challenge, digestmod);

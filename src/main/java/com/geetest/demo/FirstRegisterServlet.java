@@ -28,7 +28,7 @@ public class FirstRegisterServlet extends HttpServlet {
         paramMap.put("user_id", userId); // 网站用户id
         paramMap.put("client_type", "web"); // web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
         paramMap.put("ip_address", "127.0.0.1"); // 传输用户请求验证时所携带的IP
-        GeetestLibResult result = gtLib.register(paramMap, digestmod);
+        GeetestLibResult result = gtLib.register(digestmod, paramMap);
         // 将结果状态设置到session中
         // 注意，此处api1接口存入session，api2会取出使用，格外注意session的存取和分布式环境下的应用场景
         request.getSession().setAttribute(GeetestLib.GEETEST_SERVER_STATUS_SESSION_KEY, result.getStatus());
